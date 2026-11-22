@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar Predict - Solar Energy Forecasting Dashboard</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Bar -->
+    <header class="top-navbar">
+      <div class="nav-left">
+        <div class="brand-logo" id="logo-home">
+          <!-- Glowing Sun Icon -->
+          <svg class="sun-icon-main" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="4" stroke="#f5b041" stroke-width="2" fill="none" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="#f5b041" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <span class="brand-text">SOLAR <span class="brand-pro">PREDICT</span></span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-center">
+        <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+        <button class="nav-tab" data-tab="forecasts">Forecasts</button>
+        <button class="nav-tab" data-tab="history">Historical Data</button>
+        <button class="nav-tab" data-tab="settings">Settings</button>
+      </nav>
+
+      <!-- Right Header: User Profile & Notification -->
+      <div class="nav-right">
+        <!-- Admin Profile Button -->
+        <div class="user-profile" id="user-profile-btn" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">
+          <div class="user-avatar">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Anushri" />
+          </div>
+          <div class="user-info">
+            <span class="user-name">Anushri</span>
+            <span class="user-role">admin</span>
+          </div>
+          <svg class="dropdown-arrow-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </div>
+
+        <!-- Notification Bell -->
+        <button class="notification-btn" id="notif-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+
+        <!-- Admin Profile Dropdown Menu -->
+        <div class="dropdown-panel profile-dropdown hidden" id="profile-dropdown">
+          <div class="dropdown-header">
+            <div class="profile-header-avatar">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Anushri" />
+            </div>
+            <div class="profile-header-details">
+              <h4>Anushri</h4>
+              <p>anushri@solarpredict.io</p>
+              <span class="badge-role">System Administrator</span>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-list">
+            <div class="dropdown-item" data-action="view-plant">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#f5b041" stroke-width="2"><rect x="3" y="11" width="18" height="9" rx="1"/><path d="M3 15.5h18M9 11v9M15 11v9"/></svg>
+              <span>Solar Farm #04 (2.0 MWp)</span>
+            </div>
+            <div class="dropdown-item" data-action="account-settings">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00f2fe" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Account & Security</span>
+            </div>
+            <div class="dropdown-item" data-action="api-keys">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#00f2fe" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+              <span>API Access & Tokens</span>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <button class="dropdown-btn-logout" id="btn-logout">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Log Out</span>
+          </button>
+        </div>
+
+        <!-- Notifications Dropdown Menu -->
+        <div class="dropdown-panel notif-dropdown hidden" id="notif-dropdown">
+          <div class="notif-header">
+            <h4>System Notifications</h4>
+            <span class="notif-badge">3 New</span>
+          </div>
+          <div class="notif-list">
+            <div class="notif-item unread">
+              <span class="notif-icon cyan-bg">⚡</span>
+              <div class="notif-content">
+                <p class="notif-title">Peak Generation Record</p>
+                <p class="notif-desc">System reached 1,845.7 kW (92% peak efficiency).</p>
+                <span class="notif-time">2 mins ago</span>
+              </div>
+            </div>
+            <div class="notif-item unread">
+              <span class="notif-icon gold-bg">☀️</span>
+              <div class="notif-content">
+                <p class="notif-title">High Irradiance Alert</p>
+                <p class="notif-desc">Solar radiation currently exceeding 840 W/m².</p>
+                <span class="notif-time">14 mins ago</span>
+              </div>
+            </div>
+            <div class="notif-item">
+              <span class="notif-icon blue-bg">🧠</span>
+              <div class="notif-content">
+                <p class="notif-title">ML Model Synced</p>
+                <p class="notif-desc">XGBoost weights retrained (R²: 0.8902).</p>
+                <span class="notif-time">1 hour ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace Area -->
+    <div class="dashboard-body">
+      <!-- Left Sidebar: Input Parameter Panel -->
+      <aside class="sidebar-panel">
+        <h2 class="panel-heading">Input Parameter Panel</h2>
+
+        <div class="parameter-list">
+          <!-- Wind Speed -->
+          <div class="param-group">
+            <div class="param-header">
+              <div class="param-label-wrap">
+                <span class="param-icon-box cyan-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 12v9" />
+                    <path d="M12 12c.5-3 3-5 5-5s1.5 2.5-.5 4.5l-4.5.5z" />
+                    <path d="M12 12c-2.5-1.5-4-4-2-6s3.5.5 3.5 3.5l.5 2.5z" />
+                    <path d="M12 12c-1 3-3.5 4.5-5 3.5s-.5-3.5 2-5l3 1.5z" />
+                    <circle cx="12" cy="12" r="1.5" fill="#00f2fe" />
+                  </svg>
+                </span>
+                <span class="param-title">Wind Speed (m/s)</span>
+              </div>
+              <div class="param-value-pill" id="val-wind">7.4</div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="slider-wind" class="custom-slider slider-yellow" min="0" max="15" step="0.1" value="7.4" />
+              <div class="slider-scale-labels">
+                <span>0</span>
+                <span>0-15</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sunshine Duration -->
+          <div class="param-group">
+            <div class="param-header">
+              <div class="param-label-wrap">
+                <span class="param-icon-box yellow-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#f5b041" stroke-width="1.8" stroke-linecap="round">
+                    <circle cx="12" cy="12" r="3.5" />
+                    <path d="M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M3 12h2M19 12h2M5.64 18.36l-1.42 1.42M19.78 4.22l-1.42 1.42" />
+                  </svg>
+                </span>
+                <span class="param-title">Sunshine Duration (Hrs)</span>
+              </div>
+              <div class="param-value-pill" id="val-sunshine">9.1</div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="slider-sunshine" class="custom-slider slider-yellow" min="0" max="12" step="0.1" value="9.1" />
+              <div class="slider-scale-labels">
+                <span>0</span>
+                <span>0-12</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Air Pressure -->
+          <div class="param-group">
+            <div class="param-header">
+              <div class="param-label-wrap">
+                <span class="param-icon-box cyan-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 12l3-3" />
+                    <circle cx="12" cy="12" r="1.5" fill="#00f2fe" />
+                    <path d="M7 15h.01M17 15h.01M12 7v1" />
+                  </svg>
+                </span>
+                <span class="param-title">Air Pressure (hPa)</span>
+              </div>
+              <div class="param-value-pill" id="val-pressure">1014</div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="slider-pressure" class="custom-slider slider-cyan" min="980" max="1040" step="1" value="1014" />
+              <div class="slider-scale-labels">
+                <span>1014</span>
+                <span>980-1040</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Solar Radiation -->
+          <div class="param-group">
+            <div class="param-header">
+              <div class="param-label-wrap">
+                <span class="param-icon-box yellow-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#f5b041" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="9" rx="1" />
+                    <path d="M3 15.5h18" />
+                    <path d="M9 11v9M15 11v9" />
+                    <path d="M7 4a3 3 0 0 1 3-3M6 7l1-1M12 3v1M14 6l1-1" />
+                  </svg>
+                </span>
+                <span class="param-title">Solar Radiation (W/m²)</span>
+              </div>
+              <div class="param-value-pill" id="val-radiation">845</div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="slider-radiation" class="custom-slider slider-yellow" min="0" max="1200" step="5" value="845" />
+              <div class="slider-scale-labels">
+                <span>0</span>
+                <span>0-1200</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Air Temperature -->
+          <div class="param-group">
+            <div class="param-header">
+              <div class="param-label-wrap">
+                <span class="param-icon-box yellow-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#f5b041" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
+                    <circle cx="11.5" cy="17.5" r="2" fill="#f5b041" />
+                  </svg>
+                </span>
+                <span class="param-title">Air Temperature (°C)</span>
+              </div>
+              <div class="param-value-pill" id="val-temp">28.6</div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="slider-temp" class="custom-slider slider-yellow" min="5" max="45" step="0.1" value="28.6" />
+              <div class="slider-scale-labels">
+                <span>5</span>
+                <span>5-45</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Humidity -->
+          <div class="param-group">
+            <div class="param-header">
+              <div class="param-label-wrap">
+                <span class="param-icon-box cyan-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                  </svg>
+                </span>
+                <span class="param-title">Humidity (%)</span>
+              </div>
+              <div class="param-value-pill" id="val-humidity">62</div>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="slider-humidity" class="custom-slider slider-cyan" min="0" max="100" step="1" value="62" />
+              <div class="slider-scale-labels">
+                <span>0</span>
+                <span>0-100</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar Actions -->
+        <div class="sidebar-actions">
+          <button id="btn-apply" class="btn-primary-cyan">Apply Parameters</button>
+          <button id="btn-clear" class="btn-outline-cyan">Clear</button>
+        </div>
+      </aside>
+
+      <!-- Right Content View Area -->
+      <main class="main-content">
+
+        <!-- ===================================================================
+             VIEW 1: DASHBOARD (Active by default)
+             =================================================================== -->
+        <div id="view-dashboard" class="tab-view active">
+          <h1 class="main-title">Dashboard</h1>
+
+          <!-- Top KPI Cards Row -->
+          <section class="kpi-grid">
+            <!-- Card 1: System Production -->
+            <div class="kpi-card system-production-card">
+              <div class="prod-left">
+                <span class="card-subtitle-gold">System Production</span>
+                <div class="prod-metric-wrap">
+                  <span class="prod-number" id="display-system-prod">1845.7</span>
+                  <span class="prod-unit">kW</span>
+                </div>
+                <span class="prod-updated">Updated 1 min ago</span>
+              </div>
+
+              <div class="prod-right">
+                <div class="gauge-container">
+                  <svg class="radial-gauge-svg" viewBox="0 0 180 110">
+                    <defs>
+                      <linearGradient id="cyanArcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#00c6ff" />
+                        <stop offset="100%" stop-color="#00f2fe" />
+                      </linearGradient>
+                      <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="3.5" result="blur" />
+                        <feMerge>
+                          <feMergeNode in="blur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    
+                    <path class="gauge-bg-arc" d="M 20 95 A 70 70 0 0 1 160 95" fill="none" stroke="#1c2838" stroke-width="9" stroke-linecap="round" />
+                    <path id="gauge-active-arc" class="gauge-active-arc" d="M 20 95 A 70 70 0 0 1 160 95" fill="none" stroke="url(#cyanArcGrad)" stroke-width="9" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="20" filter="url(#cyanGlow)" />
+                    <line id="gauge-needle" x1="90" y1="95" x2="148" y2="82" stroke="#00f2fe" stroke-width="3.5" stroke-linecap="round" filter="url(#cyanGlow)" />
+                    <circle cx="90" cy="95" r="4" fill="#00f2fe" />
+                    
+                    <text x="22" y="105" class="gauge-label">0</text>
+                    <text x="90" y="105" text-anchor="middle" class="gauge-pct" id="gauge-pct-label">92%</text>
+                    <text x="158" y="105" text-anchor="end" class="gauge-label">2000</text>
+                  </svg>
+
+                  <div class="gauge-kw-badge">
+                    <span>kW</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: Avg Daily Forecast -->
+            <div class="kpi-card avg-forecast-card">
+              <div class="card-top-row">
+                <span class="card-subtitle-gray">Avg. Daily Forecast</span>
+                <svg class="card-corner-icon icon-gold" viewBox="0 0 24 24" fill="none" stroke="#f5b041" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                </svg>
+              </div>
+              <div class="kpi-big-value gold-text" id="display-daily-forecast">9.4 MWh</div>
+            </div>
+
+            <!-- Card 3: Current Weather -->
+            <div class="kpi-card weather-card">
+              <div class="card-top-row">
+                <span class="card-subtitle-gray">Current Weather</span>
+                <svg class="card-corner-icon icon-cyan" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                </svg>
+              </div>
+              <div class="kpi-big-value cyan-text" id="display-weather">Sunny | 29°C</div>
+            </div>
+          </section>
+
+          <!-- Bottom Visualizations Grid -->
+          <section class="charts-grid">
+            <!-- 24-Hour Solar Energy Generation Forecast Chart -->
+            <div class="chart-card forecast-chart-card">
+              <div class="chart-header">
+                <h3 class="chart-heading">24-Hour Solar Energy Generation Forecast (kW)</h3>
+                <div class="chart-legend">
+                  <div class="legend-item">
+                    <span class="legend-line line-gold"></span>
+                    <span class="legend-text">Predicted Curve</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-line line-cyan-dashed"></span>
+                    <span class="legend-text">Actual History</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chart-body-wrapper">
+                <svg id="forecast-svg-chart" class="forecast-svg" viewBox="0 0 740 330" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="daylightAreaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="rgba(245, 176, 65, 0.18)" />
+                      <stop offset="100%" stop-color="rgba(245, 176, 65, 0.02)" />
+                    </linearGradient>
+                    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+
+                  <g class="grid-group">
+                    <text x="42" y="44" class="axis-y-label">2000</text>
+                    <line x1="55" y1="40" x2="720" y2="40" class="chart-gridline" />
+
+                    <text x="42" y="104" class="axis-y-label">1500</text>
+                    <line x1="55" y1="100" x2="720" y2="100" class="chart-gridline" />
+
+                    <text x="42" y="164" class="axis-y-label">1000</text>
+                    <line x1="55" y1="160" x2="720" y2="160" class="chart-gridline" />
+
+                    <text x="42" y="224" class="axis-y-label">500</text>
+                    <line x1="55" y1="220" x2="720" y2="220" class="chart-gridline" />
+
+                    <text x="42" y="284" class="axis-y-label">0</text>
+                    <line x1="55" y1="280" x2="720" y2="280" class="chart-gridline-base" />
+
+                    <text x="18" y="160" class="axis-title-rotated">kW</text>
+                  </g>
+
+                  <rect x="235" y="40" width="285" height="240" fill="url(#daylightAreaGrad)" rx="2" />
+                  <text x="377" y="270" text-anchor="middle" class="daylight-range-text">08:00 - 18:00</text>
+
+                  <path id="curve-actual" class="curve-actual-history" 
+                    d="M 55 280 C 140 280 180 275 230 250 C 280 220 330 90 395 55 C 460 100 500 230 550 255 C 600 275 660 280 720 280" 
+                    fill="none" stroke="#00f2fe" stroke-width="2.2" stroke-dasharray="5 4" opacity="0.9" />
+
+                  <path id="curve-predicted" class="curve-predicted-solid" 
+                    d="M 55 280 C 140 280 180 270 230 240 C 280 200 330 75 395 48 C 460 85 500 215 550 248 C 600 270 660 280 720 280" 
+                    fill="none" stroke="#f5b041" stroke-width="3.2" filter="url(#goldGlow)" />
+
+                  <g id="peak-tooltip" class="tooltip-callout" transform="translate(395, 48)">
+                    <rect x="-36" y="-44" width="72" height="34" rx="4" class="tooltip-bg" />
+                    <polygon points="0,-10 -5,-16 5,-16" class="tooltip-arrow" />
+                    <text x="0" y="-30" text-anchor="middle" class="tooltip-time-text">13:00</text>
+                    <text x="0" y="-17" text-anchor="middle" class="tooltip-val-text" id="tooltip-val">1845 kW</text>
+                    <circle cx="0" cy="0" r="5" fill="#f5b041" filter="url(#goldGlow)" />
+                    <circle cx="0" cy="0" r="2.5" fill="#ffffff" />
+                  </g>
+
+                  <g class="axis-x-group">
+                    <text x="55" y="306" text-anchor="middle" class="axis-x-label">00:00</text>
+                    <text x="88" y="306" text-anchor="middle" class="axis-x-label">01:00</text>
+                    <text x="121" y="306" text-anchor="middle" class="axis-x-label">02:00</text>
+                    <text x="154" y="306" text-anchor="middle" class="axis-x-label">03:00</text>
+                    <text x="187" y="306" text-anchor="middle" class="axis-x-label">04:00</text>
+                    <text x="220" y="306" text-anchor="middle" class="axis-x-label">05:00</text>
+                    <text x="253" y="306" text-anchor="middle" class="axis-x-label">08:00</text>
+                    <text x="286" y="306" text-anchor="middle" class="axis-x-label">09:00</text>
+                    <text x="319" y="306" text-anchor="middle" class="axis-x-label">10:00</text>
+                    <text x="352" y="306" text-anchor="middle" class="axis-x-label">11:00</text>
+                    <text x="385" y="306" text-anchor="middle" class="axis-x-label">12:00</text>
+                    <text x="418" y="306" text-anchor="middle" class="axis-x-label">13:00</text>
+                    <text x="451" y="306" text-anchor="middle" class="axis-x-label">14:00</text>
+                    <text x="484" y="306" text-anchor="middle" class="axis-x-label">15:00</text>
+                    <text x="517" y="306" text-anchor="middle" class="axis-x-label">17:00</text>
+                    <text x="550" y="306" text-anchor="middle" class="axis-x-label">18:00</text>
+                    <text x="583" y="306" text-anchor="middle" class="axis-x-label">19:00</text>
+                    <text x="616" y="306" text-anchor="middle" class="axis-x-label">20:00</text>
+                    <text x="649" y="306" text-anchor="middle" class="axis-x-label">21:00</text>
+                    <text x="682" y="306" text-anchor="middle" class="axis-x-label">22:00</text>
+                    <text x="715" y="306" text-anchor="middle" class="axis-x-label">23:00</text>
+                  </g>
+
+                  <text x="385" y="325" text-anchor="middle" class="axis-main-title">Time</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Feature Importance Card -->
+            <div class="chart-card feature-importance-card">
+              <h3 class="chart-heading">Feature Importance (ML Model)</h3>
+
+              <div class="fi-chart-wrapper">
+                <svg class="fi-svg" viewBox="0 0 320 280">
+                  <defs>
+                    <linearGradient id="goldBarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#ffd56b" />
+                      <stop offset="100%" stop-color="#f5b041" />
+                    </linearGradient>
+                    <linearGradient id="slateBarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#2a3d54" />
+                      <stop offset="100%" stop-color="#1c2838" />
+                    </linearGradient>
+                  </defs>
+
+                  <g class="fi-grid-group">
+                    <text x="32" y="20" class="fi-y-label">0.5</text>
+                    <line x1="38" y1="20" x2="305" y2="20" class="fi-gridline" />
+
+                    <text x="32" y="56" class="fi-y-label">0.4</text>
+                    <line x1="38" y1="56" x2="305" y2="56" class="fi-gridline" />
+
+                    <text x="32" y="92" class="fi-y-label">0.3</text>
+                    <line x1="38" y1="92" x2="305" y2="92" class="fi-gridline" />
+
+                    <text x="32" y="128" class="fi-y-label">0.2</text>
+                    <line x1="38" y1="128" x2="305" y2="128" class="fi-gridline" />
+
+                    <text x="32" y="164" class="fi-y-label">0.1</text>
+                    <line x1="38" y1="164" x2="305" y2="164" class="fi-gridline" />
+
+                    <text x="32" y="200" class="fi-y-label">0.0</text>
+                    <line x1="38" y1="200" x2="305" y2="200" class="fi-gridline-base" />
+                  </g>
+
+                  <g class="fi-bar-group">
+                    <text x="65" y="32" class="fi-bar-val-gold">0.45</text>
+                    <rect x="52" y="40" width="26" height="160" rx="3" fill="url(#goldBarGrad)" filter="url(#goldGlow)" />
+                    <text x="65" y="214" transform="rotate(-35, 65, 214)" class="fi-x-label gold-rotated">Radiation</text>
+                  </g>
+
+                  <g class="fi-bar-group">
+                    <text x="107" y="77" class="fi-bar-val-gold">0.32</text>
+                    <rect x="94" y="85" width="26" height="115" rx="3" fill="url(#goldBarGrad)" filter="url(#goldGlow)" />
+                    <text x="107" y="214" transform="rotate(-35, 107, 214)" class="fi-x-label gold-rotated">Sunshine</text>
+                  </g>
+
+                  <g class="fi-bar-group">
+                    <text x="149" y="102" class="fi-bar-val-slate">0.25</text>
+                    <rect x="136" y="110" width="26" height="90" rx="3" fill="url(#slateBarGrad)" />
+                    <text x="149" y="214" transform="rotate(-35, 149, 214)" class="fi-x-label muted-rotated">Temp</text>
+                  </g>
+
+                  <g class="fi-bar-group">
+                    <text x="191" y="120" class="fi-bar-val-slate">0.20</text>
+                    <rect x="178" y="128" width="26" height="72" rx="3" fill="url(#slateBarGrad)" />
+                    <text x="191" y="214" transform="rotate(-35, 191, 214)" class="fi-x-label muted-rotated">Humidity</text>
+                  </g>
+
+                  <g class="fi-bar-group">
+                    <text x="233" y="138" class="fi-bar-val-slate">0.15</text>
+                    <rect x="220" y="146" width="26" height="54" rx="3" fill="url(#slateBarGrad)" />
+                    <text x="233" y="214" transform="rotate(-35, 233, 214)" class="fi-x-label muted-rotated">Pressure</text>
+                  </g>
+
+                  <g class="fi-bar-group">
+                    <text x="275" y="156" class="fi-bar-val-slate">0.10</text>
+                    <rect x="262" y="164" width="26" height="36" rx="3" fill="url(#slateBarGrad)" />
+                    <text x="275" y="214" transform="rotate(-35, 275, 214)" class="fi-x-label muted-rotated">Wind</text>
+                  </g>
+
+                  <g class="sparkle-star" transform="translate(292, 32)">
+                    <polygon points="0,-10 3,-3 10,0 3,3 0,10 -3,3 -10,0 -3,-3" fill="rgba(255,255,255,0.18)" />
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 2: 7-DAY SOLAR FORECASTS
+             =================================================================== -->
+        <div id="view-forecasts" class="tab-view">
+          <div class="view-header-row">
+            <div>
+              <h1 class="main-title">7-Day Solar Forecast & Weather Model</h1>
+              <p class="view-subtitle">High-resolution photovoltaic yield projections powered by XGBoost</p>
+            </div>
+            <button class="btn-outline-cyan btn-export" id="btn-export-forecast">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export Forecast (JSON)
+            </button>
+          </div>
+
+          <!-- 7-Day Forecast Cards Grid -->
+          <div class="forecast-week-grid">
+            <!-- Day 1 (Today) -->
+            <div class="day-forecast-card active-day">
+              <div class="day-card-badge">Today</div>
+              <span class="day-card-name">Monday</span>
+              <span class="day-card-date">Sep 01</span>
+              <div class="day-weather-icon gold-text">☀️</div>
+              <span class="day-condition">Clear & Sunny</span>
+              <div class="day-energy-val gold-text">9.4 <span class="unit">MWh</span></div>
+              <div class="day-stats-row">
+                <span>Peak: 1,845 kW</span>
+                <span>Rad: 845 W/m²</span>
+              </div>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="day-forecast-card">
+              <span class="day-card-name">Tuesday</span>
+              <span class="day-card-date">Sep 02</span>
+              <div class="day-weather-icon gold-text">🌤️</div>
+              <span class="day-condition">Partly Sunny</span>
+              <div class="day-energy-val gold-text">8.8 <span class="unit">MWh</span></div>
+              <div class="day-stats-row">
+                <span>Peak: 1,720 kW</span>
+                <span>Rad: 790 W/m²</span>
+              </div>
+            </div>
+
+            <!-- Day 3 -->
+            <div class="day-forecast-card">
+              <span class="day-card-name">Wednesday</span>
+              <span class="day-card-date">Sep 03</span>
+              <div class="day-weather-icon cyan-text">☁️</div>
+              <span class="day-condition">Scattered Clouds</span>
+              <div class="day-energy-val cyan-text">6.9 <span class="unit">MWh</span></div>
+              <div class="day-stats-row">
+                <span>Peak: 1,350 kW</span>
+                <span>Rad: 610 W/m²</span>
+              </div>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="day-forecast-card">
+              <span class="day-card-name">Thursday</span>
+              <span class="day-card-date">Sep 04</span>
+              <div class="day-weather-icon gold-text">☀️</div>
+              <span class="day-condition">Clear Sky</span>
+              <div class="day-energy-val gold-text">9.7 <span class="unit">MWh</span></div>
+              <div class="day-stats-row">
+                <span>Peak: 1,890 kW</span>
+                <span>Rad: 870 W/m²</span>
+              </div>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="day-forecast-card">
+              <span class="day-card-name">Friday</span>
+              <span class="day-card-date">Sep 05</span>
+              <div class="day-weather-icon gold-text">🌤️</div>
+              <span class="day-condition">Mostly Sunny</span>
+              <div class="day-energy-val gold-text">8.5 <span class="unit">MWh</span></div>
+              <div class="day-stats-row">
+                <span>Peak: 1,680 kW</span>
+                <span>Rad: 760 W/m²</span>
+              </div>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="day-forecast-card">
+              <span class="day-card-name">Saturday</span>
+              <span class="day-card-date">Sep 06</span>
+              <div class="day-weather-icon cyan-text">🌧️</div>
+              <span class="day-condition">Light Rain / Low Rad</span>
+              <div class="day-energy-val cyan-text">3.8 <span class="unit">MWh</span></div>
+              <div class="day-stats-row">
+                <span>Peak: 750 kW</span>
+                <span>Rad: 320 W/m²</span>
+              </div>
+            </div>
+
+            <!-- Day 7 -->
+            <div class="day-forecast-card">
+              <span class="day-card-name">Sunday</span>
+              <span class="day-card-date">Sep 07</span>
+              <div class="day-weather-icon gold-text">☀️</div>
+              <span class="day-condition">Full Sun</span>
+              <div class="day-energy-val gold-text">9.9 <span class="unit">MWh</span></div>
+              <div class="day-stats-row">
+                <span>Peak: 1,920 kW</span>
+                <span>Rad: 890 W/m²</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extended Weekly Solar Yield Breakdown -->
+          <div class="chart-card forecast-breakdown-card">
+            <h3 class="chart-heading">Estimated Hourly Yield Curve (Selected Day: Today)</h3>
+            <div class="hourly-matrix">
+              <div class="matrix-cell"><span>06:00</span><strong>85 kW</strong></div>
+              <div class="matrix-cell"><span>08:00</span><strong>490 kW</strong></div>
+              <div class="matrix-cell"><span>10:00</span><strong>1,240 kW</strong></div>
+              <div class="matrix-cell peak-cell"><span>12:00</span><strong>1,790 kW</strong></div>
+              <div class="matrix-cell peak-cell highlight-gold"><span>13:00 (Peak)</span><strong>1,845 kW</strong></div>
+              <div class="matrix-cell peak-cell"><span>14:00</span><strong>1,710 kW</strong></div>
+              <div class="matrix-cell"><span>16:00</span><strong>1,120 kW</strong></div>
+              <div class="matrix-cell"><span>18:00</span><strong>340 kW</strong></div>
+              <div class="matrix-cell"><span>20:00</span><strong>0 kW</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 3: HISTORICAL DATA & ANALYTICS
+             =================================================================== -->
+        <div id="view-history" class="tab-view">
+          <div class="view-header-row">
+            <div>
+              <h1 class="main-title">Historical Plant Performance & Sensor Logs</h1>
+              <p class="view-subtitle">Raw telemetry dataset from solar irradiance and meteorological stations</p>
+            </div>
+            <div class="history-actions">
+              <input type="text" id="history-search" class="history-search-input" placeholder="Search date / hour..." />
+              <button class="btn-primary-cyan btn-export" id="btn-export-history">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Historical Summary KPI Cards -->
+          <div class="history-kpis-grid">
+            <div class="kpi-card mini-kpi">
+              <span class="card-subtitle-gray">Total Recorded Samples</span>
+              <div class="kpi-big-value gold-text">8,760 <span class="unit-mini">Hours</span></div>
+            </div>
+            <div class="kpi-card mini-kpi">
+              <span class="card-subtitle-gray">All-Time Peak Power</span>
+              <div class="kpi-big-value cyan-text">7,701.0 <span class="unit-mini">kW</span></div>
+            </div>
+            <div class="kpi-card mini-kpi">
+              <span class="card-subtitle-gray">Mean Solar Radiation</span>
+              <div class="kpi-big-value gold-text">182.3 <span class="unit-mini">W/m²</span></div>
+            </div>
+            <div class="kpi-card mini-kpi">
+              <span class="card-subtitle-gray">Model R² Validation</span>
+              <div class="kpi-big-value cyan-text">0.8902 <span class="unit-mini">Score</span></div>
+            </div>
+          </div>
+
+          <!-- Historical Data Table -->
+          <div class="chart-card table-card">
+            <div class="table-responsive">
+              <table class="data-table" id="history-table">
+                <thead>
+                  <tr>
+                    <th>Date-Hour (NMT)</th>
+                    <th>Wind Speed (m/s)</th>
+                    <th>Sunshine (min)</th>
+                    <th>Air Pressure (hPa)</th>
+                    <th>Radiation (W/m²)</th>
+                    <th>Air Temp (°C)</th>
+                    <th>Humidity (%)</th>
+                    <th>System Production (kW)</th>
+                  </tr>
+                </thead>
+                <tbody id="history-table-body">
+                  <!-- Dynamically populated rows from app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===================================================================
+             VIEW 4: SETTINGS & MODEL CONFIGURATION
+             =================================================================== -->
+        <div id="view-settings" class="tab-view">
+          <div class="view-header-row">
+            <div>
+              <h1 class="main-title">Settings & Model Configuration</h1>
+              <p class="view-subtitle">Manage ML pipeline architecture, plant hardware specs, and backend API integration</p>
+            </div>
+            <button class="btn-primary-cyan" id="btn-save-settings">Save Changes</button>
+          </div>
+
+          <div class="settings-grid">
+            <!-- ML Model Configuration Card -->
+            <div class="chart-card settings-card">
+              <h3 class="chart-heading">ML Model Architecture & Parameters</h3>
+              <div class="settings-form">
+                <div class="form-group">
+                  <label>Selected Forecasting Model</label>
+                  <select id="setting-model-type" class="custom-select">
+                    <option value="xgboost" selected>XGBoost Regressor (Tuned via Optuna - R²: 0.890)</option>
+                    <option value="rf">Random Forest Regressor (n_estimators=100)</option>
+                    <option value="gbm">Gradient Boosting Regressor</option>
+                    <option value="ensemble">Ensemble Weighted Average (XGB + RF)</option>
+                  </select>
+                </div>
+
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label>Test Split Ratio</label>
+                    <input type="text" class="custom-input" value="0.20 (80/20 Train/Test)" />
+                  </div>
+                  <div class="form-group">
+                    <label>Random State Seed</label>
+                    <input type="text" class="custom-input" value="42" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Pre-processing Scaler</label>
+                  <input type="text" class="custom-input" value="StandardScaler + OneHotEncoder (Day/Night)" readonly />
+                </div>
+              </div>
+            </div>
+
+            <!-- Solar Farm Hardware Specs Card -->
+            <div class="chart-card settings-card">
+              <h3 class="chart-heading">Solar Plant Physical Specifications</h3>
+              <div class="settings-form">
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label>Plant Peak Capacity (kW)</label>
+                    <input type="number" id="setting-max-capacity" class="custom-input" value="2000" />
+                  </div>
+                  <div class="form-group">
+                    <label>Panel Tilt Angle</label>
+                    <input type="text" class="custom-input" value="32° South" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Plant Location / Meteorological Region</label>
+                  <input type="text" class="custom-input" value="Solar Farm Sector 4 - Central Array" />
+                </div>
+
+                <div class="form-group">
+                  <label>Inverter Efficiency Factor</label>
+                  <input type="text" class="custom-input" value="98.4% (String Inverter Array)" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Backend API Connection Card -->
+            <div class="chart-card settings-card full-width">
+              <h3 class="chart-heading">Backend REST API Endpoint Connection</h3>
+              <p class="settings-desc">Hook your Python backend (FastAPI / Flask / Django) to serve live model inferences.</p>
+              
+              <div class="settings-form">
+                <div class="form-group-row">
+                  <div class="form-group flex-2">
+                    <label>Prediction API Endpoint</label>
+                    <input type="text" id="setting-api-url" class="custom-input" value="http://localhost:8000/api/predict" />
+                  </div>
+                  <div class="form-group flex-1">
+                    <label>Status</label>
+                    <div class="api-status-badge online" id="api-status">
+                      <span class="status-dot"></span> Online (Built-in Simulator)
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
